@@ -29,8 +29,8 @@ imap <silent> <F4><F4> <Esc>:setlocal autoindent<CR>:setlocal cindent<CR>:setloc
 nmap <silent> ww "_yiw:s/\(\%#\w\+\)\(\W\+\)\(\w\+\)/\3\2\1/<CR><c-o><c-l>:nohlsearch<CR>
 nmap <silent> w "_yiw?\w\+\_W\+\%#<CR>:s/\(\%#\w\+\)\(\_W\+\)\(\w\+\)/\3\2\1/<CR><c-o><c-l>:nohlsearch<CR>
 
-nmap <silent> <C-P> :setlocal paste<CR>
-nmap <silent> <C-P><C-P> :setlocal nopaste<CR>
+nmap <silent> <C-A> :setlocal paste<CR>
+nmap <silent> <C-A><C-A> :setlocal nopaste<CR>
 nmap <silent> <C-N> :setlocal number<CR>
 nmap <silent> <C-N><C-N> :setlocal nonumber<CR>
 nmap <silent> <C-X> :Tab /=<CR>
@@ -98,7 +98,33 @@ Plug 'getfile'
 Plug 'tpope/vim-unimpaired'
 Plug 'touv/vim-arrow'
 Plug 'Vimjas/vim-python-pep8-indent'
+Plug 'pythoncomplete'
 call plug#end()
+
+autocmd FileType python set omnifunc=python3complete#Complete
+
+" remap autocomplete to smart Tab
+function! Smart_TabComplete()
+  let line = getline('.')                         " current line
+
+  let substr = strpart(line, -1, col('.')+1)      " from the start of the current
+                                                  " line to one character right
+                                                  " of the cursor
+  let substr = matchstr(substr, "[^ \t]*$")       " word till cursor
+  if (strlen(substr)==0)                          " nothing to match on empty string
+    return "\<tab>"
+  endif
+  let has_period = match(substr, '\.') != -1      " position of period, if any
+  let has_slash = match(substr, '\/') != -1       " position of slash, if any
+  if (!has_period && !has_slash)
+    return "\<C-X>\<C-P>"                         " existing text matching
+  elseif ( has_slash )
+    return "\<C-X>\<C-F>"                         " file matching
+  else
+    return "\<C-X>\<C-O>"                         " plugin matching
+  endif
+endfunction
+inoremap <silent> <tab> <c-r>=Smart_TabComplete()<CR>
 
 " manually fix that func to hack getfile.vim's hotkeys:
 "function! s:DoGetFile()
