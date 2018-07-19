@@ -25,6 +25,10 @@ imap <silent> <F4> <Esc>:setlocal noautoindent<CR>:setlocal nocindent<CR>:setloc
 nmap <silent> <F4><F4> :setlocal autoindent<CR>:setlocal cindent<CR>:setlocal indentexpr=GetPythonIndent(v:lnum)<CR>
 imap <silent> <F4><F4> <Esc>:setlocal autoindent<CR>:setlocal cindent<CR>:setlocal indentexpr=GetPythonIndent(v:lnum)<CR>
 
+"swap words forward/back on ww/w
+nmap <silent> ww "_yiw:s/\(\%#\w\+\)\(\W\+\)\(\w\+\)/\3\2\1/<CR><c-o><c-l>:nohlsearch<CR>
+nmap <silent> w "_yiw?\w\+\_W\+\%#<CR>:s/\(\%#\w\+\)\(\_W\+\)\(\w\+\)/\3\2\1/<CR><c-o><c-l>:nohlsearch<CR>
+
 nmap <silent> <C-P> :setlocal paste<CR>
 nmap <silent> <C-P><C-P> :setlocal nopaste<CR>
 nmap <silent> <C-N> :setlocal number<CR>
