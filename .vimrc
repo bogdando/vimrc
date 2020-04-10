@@ -55,8 +55,8 @@ nmap <F2> :w<CR>
 imap <F2><F2> <Esc>:wq<CR>
 nmap <F2><F2> :wq<CR>
 
-" run tox PEP8 on F7
-nmap <F7> :!tox -epep8<CR>
+" run tox PEP8/Go-lint on F7
+nmap <F7> :!tox -epep8 <CR> <bar> :GoMetaLinter <CR>
 
 " compile LaTeX on F9
 nmap <F9> :!docker run --rm -it -v $(pwd):/home danteev/texlive texliveonfly -c latexmk -a "-pdf -f -synctex=0" %<CR>
