@@ -37,7 +37,7 @@ nmap <silent> <C-N><C-N> :setlocal nonumber<CR>
 imap <silent> <C-A> <Esc>:setlocal paste<CR>
 imap <silent> <C-A><C-A> <Esc>:setlocal nopaste<CR>
 imap <silent> <C-N> <Esc>:setlocal number<CR>
-imap <silent> <<C-N><C-N> <Esc>:setlocal nonumber<CR>
+imap <silent> <C-N><C-N> <Esc>:setlocal nonumber<CR>
 
 " align paragraph on =/=> by C-x/C-c (Ruby/Puppet'ish)
 nmap <silent> <C-X> :Tab /=<CR>
@@ -48,6 +48,14 @@ imap <silent> <C-C> <Esc>:Tab /=><CR>
 " turn off search highlight on double space
 nnoremap <space><space> :nohlsearch<CR>
 
+" show refs/implementations/callees for a func/method on F1/double/tripple
+nmap <silent> <unique> <F1> :GoReferrers <CR>
+nmap <silent> <unique> <F1><F1> :GoImplements <CR>
+nmap <silent> <unique> <F1><F1><F1> :GoCallees <CR>
+imap <silent> <unique> <F1> <Esc>:GoReferrers <CR>
+imap <silent> <unique> <F1><F1> <Esc>:GoImplements <CR>
+imap <silent> <unique> <F1><F1><F1> <Esc>:GoCallees <CR>
+
 " save on F2
 imap <F2> <Esc>:w<CR>
 nmap <F2> :w<CR>
@@ -57,6 +65,7 @@ nmap <F2><F2> :wq<CR>
 
 " run tox PEP8/Go-lint on F7
 nmap <F7> :!tox -epep8 <CR> <bar> :GoMetaLinter <CR>
+imap <F7> <Esc>:!tox -epep8 <CR> <bar> :GoMetaLinter <CR>
 
 " compile LaTeX on F9
 nmap <F9> :!docker run --rm -it -v $(pwd):/home danteev/texlive texliveonfly -c latexmk -a "-pdf -f -synctex=0" %<CR>
@@ -65,9 +74,9 @@ nmap <F9> :!docker run --rm -it -v $(pwd):/home danteev/texlive texliveonfly -c 
 nmap <Esc><Esc> :q<CR>
 nmap <Esc><Esc><Esc> :q!<CR>
 
-" run tox -epy27/35 on t/tt
-nmap <silent> <unique> t :!rm -r .testrepository; tox -epy27<CR>
-nmap <silent> <unique> tt :!rm -r .testrepository; tox -epy36<CR>
+" run tox -epy27/35 and go test/single on t/tt
+nmap <silent> <unique> t :!rm -r .testrepository; tox -epy27<CR> <bar> :GoTestFunc <CR>
+nmap <silent> <unique> tt :!rm -r .testrepository; tox -epy36<CR> <bar> :GoTest <CR>
 
 " show git diff to HEAD on h and to HEAD~ for hh 
 nmap <silent> <unique> h :!git difftool @ %<CR>
