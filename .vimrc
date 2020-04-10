@@ -58,13 +58,16 @@ nmap <F2><F2> :wq<CR>
 " run tox PEP8 on F7
 nmap <F7> :!tox -epep8<CR>
 
+" compile LaTeX on F9
+nmap <F9> :!docker run --rm -it -v $(pwd):/home danteev/texlive texliveonfly -c latexmk -a "-pdf -f -synctex=0" %<CR>
+
 " exit/force on double Esc or tripple Esc
 nmap <Esc><Esc> :q<CR>
 nmap <Esc><Esc><Esc> :q!<CR>
 
 " run tox -epy27/35 on t/tt
 nmap <silent> <unique> t :!rm -r .testrepository; tox -epy27<CR>
-nmap <silent> <unique> tt :!rm -r .testrepository; tox -epy35<CR>
+nmap <silent> <unique> tt :!rm -r .testrepository; tox -epy36<CR>
 
 " show git diff to HEAD on h and to HEAD~ for hh 
 nmap <silent> <unique> h :!git difftool @ %<CR>
