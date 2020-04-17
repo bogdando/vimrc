@@ -1,5 +1,4 @@
-filetype plugin indent on
-
+filetype plugin on
 filetype indent on      " load filetype-specific indent files
 syntax enable           " enable syntax processing
 
@@ -68,28 +67,35 @@ imap <silent> <unique> <F5> <Esc>:GoDef <CR>
 nmap <silent> <unique> <F8> :GoReferrers <CR>
 imap <silent> <unique> <F8> <Esc>:GoReferrers <CR>
 
-" save on F2
-imap <silent> <unique> <F2> <Esc>:w<CR>
-nmap <silent> <unique> <F2> :w<CR>
-" save and exit on double F2
-imap <silent> <unique> <F2><F2> :silent! GoImports <CR> <bar> <Esc>:wq<CR>
-nmap <silent> <unique> <F2><F2> :silent! GoImports <CR> <bar> :wq<CR>
+" save on F2, save & exit on double F2
+imap <silent> <F2> <Esc>:w<CR>
+nmap <silent> <F2> :w<CR>
+imap <silent> <F2><F2> <Esc>:wq<CR>
+nmap <silent> <F2><F2> :wq<CR>
+autocmd FileType go imap <buffer> <silent> <F2><F2> :GoImports <CR> <bar> <Esc>:wq<CR>
+autocmd FileType go nmap <buffer> <silent> <F2><F2> :GoImports <CR> <bar> <Esc>:wq<CR>
+autocmd FileType go imap <buffer> <silent> <F2> :GoImports <CR> <bar> <Esc>:w<CR>
+autocmd FileType go nmap <buffer> <silent> <F2> :GoImports <CR> <bar> <Esc>:w<CR>
 
 " run tox PEP8/Go-lint on F7
-nmap <silent> <unique> <F7> :!tox -epep8 <CR> <bar> :GoMetaLinter <CR>
-imap <silent> <unique> <F7> <Esc>:!tox -epep8 <CR> <bar> :GoMetaLinter <CR>
+nmap <silent> <F7> :!tox -epep8 <CR>
+imap <silent> <F7> <Esc>:!tox -epep8 <CR>
+autocmd FileType go nmap <buffer> <silent> <F7> :GoMetaLinter <CR>
+autocmd FileType go imap <buffer> <silent> <F7> <Esc>:GoMetaLinter <CR>
+
+" run tox -epy36 / go test on double F7
+nmap <silent> <F7><F7> :!rm -r .testrepository; tox -epy36<CR>
+imap <silent> <F7><F7> <Esc>:!rm -r .testrepository; tox -epy36<CR>
+" run go test single func on g,t
+autocmd FileType go nmap <buffer> <silent> <F7><F7> :GoTestFunc <CR>
+autocmd FileType go imap <buffer> <silent> <F7><F7> <Esc>:GoTestFunc <CR>
 
 " compile LaTeX on F9
-nmap <silent> <unique> <F9> :!docker run --rm -it -v $(pwd):/home danteev/texlive texliveonfly -c latexmk -a "-pdf -f -synctex=0" %<CR>
+autocmd FileType tex nmap <buffer> <silent> <F9> :!docker run --rm -it -v $(pwd):/home danteev/texlive texliveonfly -c latexmk -a "-pdf -f -synctex=0" %<CR>
 
 " exit/force on double Esc or tripple Esc
 nmap <Esc><Esc> :q<CR>
 nmap <Esc><Esc><Esc> :q!<CR>
-
-" run tox -epy36 go test on g,t,t
-nmap <silent> <unique> gtt :!rm -r .testrepository; tox -epy36<CR> <bar> :GoTest <CR>
-" run go test single func on g,t
-nmap <silent> <unique> gt :GoTestFunc <CR>
 
 " show git diff to HEAD on h and to HEAD~ for h,h 
 nmap <silent> <unique> h :!git difftool @ %<CR>
@@ -160,6 +166,7 @@ Plug 'junegunn/fzf.vim'
 call plug#end()
 
 autocmd FileType python set omnifunc=python3complete#Complete
+autocmd FileType go set omnifunc=go#complete#Complete
 
 function! Smart_TabComplete()
   let line = getline('.')                         " current line
