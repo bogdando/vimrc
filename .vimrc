@@ -57,11 +57,11 @@ nnoremap <space><space> :nohlsearch<CR>
 nmap <silent> <unique> <F1><F1><F1> :GoDoc <CR>
 nmap <silent> <unique> <F1><F1> :GoImplements <CR>
 nmap <silent> <unique> <F1> :GoCallees <CR>
-imap <silent> <unique> <F1><F1><F1> :GoDoc <CR>
+imap <silent> <unique> <F1><F1><F1> <Esc>:GoDoc <CR>
 imap <silent> <unique> <F1><F1> <Esc>:GoImplements <CR>
 imap <silent> <unique> <F1> <Esc>:GoCallees <CR>
 "   - go straight to the definition on F5
-nmap <silent> <unique> <F5> <Esc>:GoDef <CR>
+nmap <silent> <unique> <F5> :GoDef <CR>
 imap <silent> <unique> <F5> <Esc>:GoDef <CR>
 " show goguru all global references for a func/method on F8 (is slow!)
 nmap <silent> <unique> <F8> :GoReferrers <CR>
@@ -72,10 +72,10 @@ imap <silent> <F2> <Esc>:w<CR>
 nmap <silent> <F2> :w<CR>
 imap <silent> <F2><F2> <Esc>:wq<CR>
 nmap <silent> <F2><F2> :wq<CR>
-autocmd FileType go imap <buffer> <silent> <F2><F2> :GoImports <CR> <bar> <Esc>:wq<CR>
-autocmd FileType go nmap <buffer> <silent> <F2><F2> :GoImports <CR> <bar> <Esc>:wq<CR>
-autocmd FileType go imap <buffer> <silent> <F2> :GoImports <CR> <bar> <Esc>:w<CR>
-autocmd FileType go nmap <buffer> <silent> <F2> :GoImports <CR> <bar> <Esc>:w<CR>
+autocmd FileType go imap <buffer> <silent> <F2><F2> <Esc>:GoImports <CR> <bar> <Esc>:wq<CR>
+autocmd FileType go nmap <buffer> <silent> <F2><F2> :GoImports <CR> <bar> :wq<CR>
+autocmd FileType go imap <buffer> <silent> <F2> <Esc>:GoImports <CR> <bar> <Esc>:w<CR>
+autocmd FileType go nmap <buffer> <silent> <F2> :GoImports <CR> <bar> :w<CR>
 
 " run tox PEP8/Go-lint on F7
 nmap <silent> <F7> :!tox -epep8 <CR>
