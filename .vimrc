@@ -3,6 +3,7 @@ filetype indent on      " load filetype-specific indent files
 syntax enable           " enable syntax processing
 
 let g:GetFileIgnoreList = ['*.o', '*.pyc', '*/tmp/*', '*~', '*/.git/*', '*/.tox/*', '*/build/*', '*/.testr/*', '*#']
+set includeexpr=substitute(v:fname,'\|.*','','g')
 
 " move across viewports on Tab (q,Tab for tabs)
 nnoremap <silent> <Tab> <C-w><C-w>
@@ -11,8 +12,8 @@ nmap <silent> <unique> q<Tab> gT
 nnoremap <silent> <unique> z :call ToggleZoom(v:true)<CR>
 " close non active (all but this one) viewports on qq
 nmap <silent> <unique> qq <C-w>o
-" q to open a file under cursor in a new tab
-nmap <silent> <unique> q <C-w>gf
+" q to open a file under cursor in a new viewport
+nmap <silent> <unique> q V<c-w>f
 " Backspace to go back to previous file (swaps two files in a loop)
 nmap <silent> <unique> <BS> :e#<CR>
 
