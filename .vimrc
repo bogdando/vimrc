@@ -155,7 +155,7 @@ augroup END
 
 "vim plug
 call plug#begin('~/.vim/plugged')
-Plug 'fatih/vim-go'
+Plug 'fatih/vim-go' "requires at least Vim 8.0.1453
 Plug 'godlygeek/tabular'
 Plug 'rodjek/vim-puppet'
 Plug 'tpope/vim-unimpaired'
