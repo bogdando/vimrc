@@ -12,8 +12,6 @@ nmap <silent> <unique> q<Tab> gT
 nnoremap <silent> <unique> z :call ToggleZoom(v:true)<CR>
 " close non active (all but this one) viewports on qq
 nmap <silent> <unique> qq <C-w>o
-" q to open a file under cursor in a new viewport
-nmap <silent> <unique> q V<c-w>f
 " Backspace to go back to previous file (swaps two files in a loop)
 nmap <silent> <unique> <BS> :e#<CR>
 
@@ -25,6 +23,7 @@ nmap <silent> <unique> <F3><F3> :GFiles! <CR>
 imap <silent> <unique> <F3><F3> <Esc>:GFiles! <CR>
 nmap <silent> <unique> <F3><F3><F3> :History <CR>
 imap <silent> <unique> <F3><F3><F3> <Esc>:History <CR>
+nmap <silent> <unique> a<F3> :MRU <CR>
 
 " toggle indentation modes on F4/double F4
 nmap <silent> <unique> <F4> :setlocal noautoindent<CR>:setlocal nocindent<CR>:setlocal nosmartindent<CR>:setlocal indentexpr=<CR>
@@ -164,6 +163,7 @@ Plug 'Vimjas/vim-python-pep8-indent'
 Plug 'pythoncomplete'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
+Plug 'yegappan/mru'
 call plug#end()
 
 autocmd FileType python set omnifunc=python3complete#Complete
