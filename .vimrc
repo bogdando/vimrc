@@ -5,106 +5,101 @@ syntax enable           " enable syntax processing
 let g:GetFileIgnoreList = ['*.o', '*.pyc', '*/tmp/*', '*~', '*/.git/*', '*/.tox/*', '*/build/*', '*/.testr/*', '*#']
 set includeexpr=substitute(v:fname,'\|.*','','g')
 
-" move across viewports on Tab (q,Tab for tabs)
+" <TAB> move across viewports (<q,TAB> for tabs)
 nnoremap <silent> <Tab> <C-w><C-w>
 nmap <silent> <unique> q<Tab> gT
-" z to toggle zoom of a viewport in/out
+" <z> toggle zoom of a viewport in/out
 nnoremap <silent> <unique> z :call ToggleZoom(v:true)<CR>
-" close non active (all but this one) viewports on qq
+" <qq> close non active (all but this one) viewports
 nmap <silent> <unique> qq <C-w>o
-" Backspace to go back to previous file (swaps two files in a loop)
+" <Backspace> go back to previous file (swaps two files in a loop)
 nmap <silent> <unique> <BS> :e#<CR>
 
-" browse/search a file in ./git/history repo on F3/double/triplle F3
-"   - C-t / C-x / C-v to open a picked file in a tab/split/vsplit viewport
+" <F3> x1/x2/x3 browse a file in ./git/history (single/double/tripple press)
+" <C-t> / <C-x> / <C-v> open a picked file in a tab/split/vsplit viewport
 nmap <silent> <unique> <F3> :Files! <CR>
 imap <silent> <unique> <F3> <Esc>:Files! <CR>
 nmap <silent> <unique> <F3><F3> :GFiles! <CR>
 imap <silent> <unique> <F3><F3> <Esc>:GFiles! <CR>
 nmap <silent> <unique> <F3><F3><F3> :History <CR>
 imap <silent> <unique> <F3><F3><F3> <Esc>:History <CR>
+" <a,F3> open alternative view for history ( <o> to open file in a viewport)
 nmap <silent> <unique> a<F3> :MRU <CR>
 
-" toggle indentation modes on F4/double F4
-nmap <silent> <unique> <F4> :setlocal noautoindent<CR>:setlocal nocindent<CR>:setlocal nosmartindent<CR>:setlocal indentexpr=<CR>
-imap <silent> <unique> <F4> <Esc>:setlocal noautoindent<CR>:setlocal nocindent<CR>:setlocal nosmartindent<CR>:setlocal indentexpr=<CR>
-nmap <silent> <unique> <F4><F4> :setlocal autoindent<CR>:setlocal cindent<CR>:setlocal indentexpr=GetPythonIndent(v:lnum)<CR>
-imap <silent> <unique> <F4><F4> <Esc>:setlocal autoindent<CR>:setlocal cindent<CR>:setlocal indentexpr=GetPythonIndent(v:lnum)<CR>
-
-" swap words forward/back on ww/w (todo support dots/slashes maybe)
+" <ww> / <w> swap words forward/back 
 nmap <silent> ww "_yiw:s/\(\%#\w\+\)\(\W\+\)\(\w\+\)/\3\2\1/<CR><c-o><c-l>:nohlsearch<CR>
 nmap <silent> w "_yiw?\w\+\_W\+\%#<CR>:s/\(\%#\w\+\)\(\_W\+\)\(\w\+\)/\3\2\1/<CR><c-o><c-l>:nohlsearch<CR>
 
-" toggle paste mode/show line numbers on C-a/n and double press
+" <C-a(,a)> toggle ON/OFF paste mode
+" <C-n(,n)> toggle line numbers
 nmap <silent> <C-A> :setlocal paste<CR>
-nmap <silent> <C-A><C-A> :setlocal nopaste<CR>
+nmap <silent> <C-A>a :setlocal nopaste<CR>
 nmap <silent> <C-N> :setlocal number<CR>
-nmap <silent> <C-N><C-N> :setlocal nonumber<CR>
+nmap <silent> <C-N>n :setlocal nonumber<CR>
 imap <silent> <C-A> <Esc>:setlocal paste<CR>
-imap <silent> <C-A><C-A> <Esc>:setlocal nopaste<CR>
+imap <silent> <C-A>a <Esc>:setlocal nopaste<CR>
 imap <silent> <C-N> <Esc>:setlocal number<CR>
-imap <silent> <C-N><C-N> <Esc>:setlocal nonumber<CR>
+imap <silent> <C-N>n <Esc>:setlocal nonumber<CR>
 
-" align 'x = y' assignments on C-x (Ruby/Puppet'ish, '=>' is auto)
+" <C-x> align 'x = y' assignments (Ruby/Puppet'ish, '=>' is auto)
 nmap <silent> <C-X> :Tab /=<CR>
 imap <silent> <C-X> <Esc>:Tab /=<CR>
 
-" turn off search highlight on double space
+" <SPACE> x2 turn off search highlight
 nnoremap <space><space> :nohlsearch<CR>
 
-" show goguru callees/what implements a func/method on F1/double F1
-"   - show go doc on tripple F1
-nmap <silent> <unique> <F1><F1><F1> :GoDoc <CR>
-nmap <silent> <unique> <F1><F1> :GoImplements <CR>
-nmap <silent> <unique> <F1> :GoCallees <CR>
-imap <silent> <unique> <F1><F1><F1> <Esc>:GoDoc <CR>
-imap <silent> <unique> <F1><F1> <Esc>:GoImplements <CR>
-imap <silent> <unique> <F1> <Esc>:GoCallees <CR>
-"   - go straight to the definition on F5
-nmap <silent> <unique> <F5> :GoDef <CR>
-imap <silent> <unique> <F5> <Esc>:GoDef <CR>
-" show goguru all global references for a func/method on F8 (is slow!)
-nmap <silent> <unique> <F8> :GoReferrers <CR>
-imap <silent> <unique> <F8> <Esc>:GoReferrers <CR>
+" <F5> x1/x2 show goguru callees or what implements a func/method (slow&faily!)
+nmap <silent> <unique> <F5><F5> :GoImplements <CR>
+nmap <silent> <unique> <F5> :GoCallees <CR>
+imap <silent> <unique> <F5><F5> <Esc>:GoImplements <CR>
+imap <silent> <unique> <F5> <Esc>:GoCallees <CR>
+" <F1> go straight to the definition (go back on backspace)
+nmap <silent> <unique> <F1> :GoDef <CR>
+imap <silent> <unique> <F1> <Esc>:GoDef <CR>
+" <a,F1> show goguru global referers for an entity
+nmap <silent> <unique> a<F1> :GoReferrers <CR>
+" <F8> show go doc
+nmap <silent> <unique> <F8> :GoDoc <CR>
+imap <silent> <unique> <F8> <Esc>:GoDoc <CR>
 
-" save on F2, save & exit on double F2
+" <F2> save, save & exit (and run goimports) on double press
 imap <silent> <F2> <Esc>:w<CR>
 nmap <silent> <F2> :w<CR>
 imap <silent> <F2><F2> <Esc>:wq<CR>
 nmap <silent> <F2><F2> :wq<CR>
-autocmd FileType go imap <buffer> <silent> <F2><F2> <Esc>:GoImports <CR> <bar> <Esc>:wq<CR>
-autocmd FileType go nmap <buffer> <silent> <F2><F2> :GoImports <CR> <bar> :wq<CR>
-autocmd FileType go imap <buffer> <silent> <F2> <Esc>:GoImports <CR> <bar> <Esc>:w<CR>
-autocmd FileType go nmap <buffer> <silent> <F2> :GoImports <CR> <bar> :w<CR>
+autocmd FileType go imap <buffer> <silent> <F2><F2> <Esc>:GoImports <CR> <bar> :!goimports -w -v ./<CR> <bar> :wq<CR>
+autocmd FileType go nmap <buffer> <silent> <F2><F2> :GoImports <CR> <bar> :!goimports -w -v ./<CR> <bar> :wq<CR>
+autocmd FileType go imap <buffer> <silent> <F2> <Esc>:GoImports <CR> <bar> :!goimports -w -v ./<CR> <bar>  :w<CR>
+autocmd FileType go nmap <buffer> <silent> <F2> :GoImports <CR> <bar> :!goimports -w -v ./<CR> <bar> :w<CR>
 
-" run tox PEP8/Go-lint on F7
+" <F7> run tox PEP8/Go-lint
 nmap <silent> <F7> :!tox -epep8 <CR>
 imap <silent> <F7> <Esc>:!tox -epep8 <CR>
 autocmd FileType go nmap <buffer> <silent> <F7> :GoMetaLinter <CR>
 autocmd FileType go imap <buffer> <silent> <F7> <Esc>:GoMetaLinter <CR>
 
-" run tox -epy36 / go test on double F7
+" <F7> x2 run tox -epy36 / go test
 nmap <silent> <F7><F7> :!rm -r .testrepository; tox -epy36<CR>
 imap <silent> <F7><F7> <Esc>:!rm -r .testrepository; tox -epy36<CR>
-" run go test single func on g,t
+" <g,t> run go test single func
 autocmd FileType go nmap <buffer> <silent> <F7><F7> :GoTestFunc <CR>
 autocmd FileType go imap <buffer> <silent> <F7><F7> <Esc>:GoTestFunc <CR>
 
-" compile LaTeX on F9
+" <F9> compile LaTeX
 autocmd FileType tex nmap <buffer> <silent> <F9> :!docker run --rm -it -v $(pwd):/home danteev/texlive texliveonfly -c latexmk -a "-pdf -f -synctex=0" %<CR>
 
-" exit/force on double Esc or tripple Esc
+" <ESC> x2/x3 exit or force exit discarding changes
 nmap <Esc><Esc> :q<CR>
 nmap <Esc><Esc><Esc> :q!<CR>
 
-" show git diff to HEAD on h and to HEAD~ for h,h 
+" <h> / <h,h> show git diff for open file to HEAD / HEAD~ 
 nmap <silent> <unique> h :!git difftool @ %<CR>
 nmap <silent> <unique> hh :!git difftool @~ %<CR>
-" show full git diff to HEAD/HEAD~ on h,g/h,h,g 
+" <h,g> / <h,h,g> show full git diff to HEAD/HEAD~ 
 nmap <silent> <unique> hg :!git difftool @<CR>
 nmap <silent> <unique> hhg :!git difftool @~<CR>
 
-" use autocomplete on smart Tab / C-r
+" <TAB>(edit mode) use smart autocomplete
 inoremap <silent> <Tab> <c-r>=Smart_TabComplete()<CR>
 
 set expandtab           " tabs are spaces
