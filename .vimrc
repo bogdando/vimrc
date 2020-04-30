@@ -98,6 +98,13 @@ nmap <silent> <unique> hh :!git difftool @~ %<CR>
 " <h,g> / <h,h,g> show full git diff to HEAD/HEAD~ 
 nmap <silent> <unique> hg :!git difftool @<CR>
 nmap <silent> <unique> hhg :!git difftool @~<CR>
+" <F4> show git info for the commit that introduced selected line
+" <F4> x2 - difftool for the commit that introduced selected line
+nmap <silent> <F4> :execute ":!git show $(git blame " bufname('%') " -L " line('.') "\|head -1\|awk '{print $1}')"<CR>
+imap <silent> <F4> <Esc>:execute ":!git show $(git blame " bufname('%') " -L " line('.') "\|head -1\|awk '{print $1}')"<CR>
+nmap <silent> <F4><F4> :execute ":!c=$(git blame " . bufname('%') " -L " . line('.') "\|head -1\|awk '{print $1}'); git difftool ${c}~ $c " . bufname('%')<CR>
+imap <silent> <F4><F4> <Esc>:execute ":!c=$(git blame " . bufname('%') " -L " . line('.') "\|head -1\|awk '{print $1}'); git difftool ${c}~ $c " . bufname('%')<CR>
+
 
 " <TAB>(edit mode) use smart autocomplete
 inoremap <silent> <Tab> <c-r>=Smart_TabComplete()<CR>
