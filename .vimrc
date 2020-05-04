@@ -149,6 +149,9 @@ nmap <silent> <F7> :!tox -epep8 <CR>
 imap <silent> <F7> <Esc>:!tox -epep8 <CR>
 autocmd FileType go nmap <buffer> <silent> <F7> :GoMetaLinter <CR>
 autocmd FileType go imap <buffer> <silent> <F7> <Esc>:GoMetaLinter <CR>
+" a<F7> run Go-vet
+autocmd FileType go nmap <buffer> <silent> a<F7> :execute ":!go vet " . bufname('%')<CR>
+autocmd FileType go imap <buffer> <silent> a<F7> <Esc>:execute ":!go vet " . bufname('%')<CR>
 
 " <F7> x2 run tox -epy36 / go test
 nmap <silent> <F7><F7> :!rm -r .testrepository; tox -epy36<CR>
