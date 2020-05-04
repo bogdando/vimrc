@@ -4,12 +4,33 @@ syntax enable           " enable syntax processing
 
 let g:GetFileIgnoreList = ['*.o', '*.pyc', '*/tmp/*', '*~', '*/.git/*', '*/.tox/*', '*/build/*', '*/.testr/*', '*#']
 set includeexpr=substitute(v:fname,'\|.*','','g')
+set foldmethod=syntax
+set mmp=5000
 
-" <TAB> move across viewports (<q,TAB> for tabs)
+"vim-go visual effects
+let g:go_disable_autoinstall = 0
+let g:go_highlight_functions = 1  
+let g:go_highlight_methods = 1  
+let g:go_highlight_structs = 1  
+let g:go_highlight_operators = 1  
+let g:go_highlight_interfaces = 1
+let g:go_highlight_build_constraints = 1 
+
+" vim w/o args: starts from MRU window to pick files
+" vim foo: starts from MRU windows to pick files by foo filter
+" <TAB> move across viewports (<C-PgUp/PgDn> for tabs)
 nnoremap <silent> <Tab> <C-w><C-w>
-nmap <silent> <unique> q<Tab> gT
-" <z> toggle zoom of a viewport in/out
-nnoremap <silent> <unique> z :call ToggleZoom(v:true)<CR>
+" (N)<SPACE> toggle folding levels between 0/N (defaults 0/1)
+"   F.e: 3<SPACE> - sets folding level to 3
+nnoremap <silent> <space> :<C-U>call ToggleFoldLevels(v:count)<CR>
+" <o> fold/unfold toggle
+nmap <silent> <unique> o za<CR>
+" <f> / <a,f> move to the next/prev closed fold block
+nnoremap <silent> <unique> f :call NextClosedFold('j')<CR>
+nnoremap <silent> <unique> af :call NextClosedFold('k')<CR>
+
+" <x> toggle zoom of a viewport in/out
+nnoremap <silent> <unique> x :call ToggleZoom(v:true)<CR>
 " <qq> close non active (all but this one) viewports
 nmap <silent> <unique> qq <C-w>o
 " <Backspace> go back to previous file (swaps two files in a loop)
@@ -49,21 +70,22 @@ imap <silent> <C-X> <Esc>:Tab /=<CR>
 nnoremap <space><space> :nohlsearch<CR>
 
 " <F5> x1/x2 show goguru callees or what implements a func/method (slow&faily!)
-nmap <silent> <unique> <F5><F5> :GoImplements <CR>
-nmap <silent> <unique> <F5> :GoCallees <CR>
-imap <silent> <unique> <F5><F5> <Esc>:GoImplements <CR>
-imap <silent> <unique> <F5> <Esc>:GoCallees <CR>
+autocmd FileType go nmap <silent> <F5><F5> :GoImplements <CR>
+autocmd FileType go nmap <silent> <F5> :GoCallees <CR>
+autocmd FileType go imap <silent> <F5><F5> <Esc>:GoImplements <CR>
+autocmd FileType go imap <silent> <F5> <Esc>:GoCallees <CR>
 " <F1> go straight to the definition (go back on backspace)
-nmap <silent> <unique> <F1> :GoDef <CR>
-imap <silent> <unique> <F1> <Esc>:GoDef <CR>
+autocmd FileType go nmap <silent> <F1> :GoDef <CR>
+autocmd FileType go imap <silent> <F1> <Esc>:GoDef <CR>
 " <a,F1> show goguru global referers for an entity
-nmap <silent> <unique> a<F1> :GoReferrers <CR>
+autocmd FileType go nmap <silent> a<F1> :GoReferrers <CR>
 " <F8> show go doc
-nmap <silent> <unique> <F8> :GoDoc <CR>
-imap <silent> <unique> <F8> <Esc>:GoDoc <CR>
+autocmd FileType go nmap <silent> <F8> :GoDoc <CR>
+autocmd FileType go imap <silent> <F8> <Esc>:GoDoc <CR>
 
-" <F6> toggle tagbar (requries exuberant-ctags)
-let g:tagbar_type_go = {  
+" <F6> toggle tags bar view
+"for python install ftplugin/python.vim manually
+autocmd FileType go let g:tagbar_type_go = {  
     \ 'ctagstype' : 'go',
     \ 'kinds'     : [
         \ 'p:package',
@@ -90,17 +112,18 @@ let g:tagbar_type_go = {
     \ 'ctagsbin'  : 'gotags',
     \ 'ctagsargs' : '-sort -silent'
     \ }
-nmap <silent> <unique> <F6> :TagbarToggle<CR>
+nmap <silent> <F6> :TagbarToggle<CR>
+imap <silent> <F6> <Esc>:TagbarToggle<CR>
 
 " <F2> save, save & exit (and run goimports) on double press
 imap <silent> <F2> <Esc>:w<CR>
 nmap <silent> <F2> :w<CR>
 imap <silent> <F2><F2> <Esc>:wq<CR>
 nmap <silent> <F2><F2> :wq<CR>
-autocmd FileType go imap <buffer> <silent> <F2><F2> <Esc>:GoImports <CR> <bar> :!goimports -w -v ./<CR> <bar> :wq<CR>
-autocmd FileType go nmap <buffer> <silent> <F2><F2> :GoImports <CR> <bar> :!goimports -w -v ./<CR> <bar> :wq<CR>
-autocmd FileType go imap <buffer> <silent> <F2> <Esc>:GoImports <CR> <bar> :!goimports -w -v ./<CR> <bar>  :w<CR>
-autocmd FileType go nmap <buffer> <silent> <F2> :GoImports <CR> <bar> :!goimports -w -v ./<CR> <bar> :w<CR>
+autocmd FileType go imap <buffer> <silent> <F2><F2> <Esc>:GoImports <CR> <bar> :execute ":!goimports -w -v " . bufname('%')<CR> <bar> :wq<CR>
+autocmd FileType go nmap <buffer> <silent> <F2><F2> :GoImports <CR> <bar> :execute ":!goimports -w -v " . bufname('%')<CR> <bar> :wq<CR>
+autocmd FileType go imap <buffer> <silent> <F2> <Esc>:GoImports <CR> <bar> :execute ":!goimports -w -v " . bufname('%')<CR> <bar>  :w<CR>
+autocmd FileType go nmap <buffer> <silent> <F2> :GoImports <CR> <bar> :execute ":!goimports -w -v " . bufname('%')<CR> <bar> :w<CR>
 
 " <F7> run tox PEP8/Go-lint
 nmap <silent> <F7> :!tox -epep8 <CR>
@@ -184,9 +207,11 @@ augroup restorezoom
     au WinEnter * silent! :call ToggleZoom(v:false)
 augroup END
 
+au VimEnter * call MRUIfEmpty()
+
 "vim plug
 call plug#begin('~/.vim/plugged')
-Plug 'fatih/vim-go' "requires at least Vim 8.0.1453
+Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' } "requires at least Vim 8.0.1453
 Plug 'godlygeek/tabular'
 Plug 'rodjek/vim-puppet'
 Plug 'tpope/vim-unimpaired'
@@ -197,7 +222,7 @@ Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'yegappan/mru'
 Plug 'preservim/nerdtree'
-Plug 'majutsushi/tagbar'
+Plug 'majutsushi/tagbar'  "requries exuberant-ctags
 call plug#end()
 
 autocmd FileType python set omnifunc=python3complete#Complete
@@ -232,4 +257,40 @@ function! ToggleZoom(toggle)
       let t:restore_zoom = { 'win': winnr(), 'cmd': winrestcmd() }
       vert resize | resize
   endi
+endfunction
+
+function! ToggleFoldLevels(level)
+    if &foldlevel || a:level != 0
+        let cmd = 'setlocal foldlevel=' . a:level
+        exe cmd
+    else
+        setlocal foldlevel=1
+    endif
+endfunction
+
+function! NextClosedFold(dir)
+    let cmd = 'norm!z' . a:dir
+    let view = winsaveview()
+    let [l0, l, open] = [0, view.lnum, 1]
+    while l != l0 && open
+        exe cmd
+        let [l0, l] = [l, line('.')]
+        let open = foldclosed(l) < 0
+    endwhile
+    if open
+        call winrestview(view)
+    endif
+endfunction
+
+function MRUIfEmpty()
+    if @% == ""
+        " No filename for current buffer
+        :MRU
+    elseif filereadable(@%) == 0
+        " File doesn't exist yet
+        execute ":MRU " . argv(0)
+    elseif line('$') == 1 && col('$') == 1
+        " File is empty
+        :MRU
+    endif
 endfunction
