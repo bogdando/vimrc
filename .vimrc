@@ -4,8 +4,10 @@ syntax enable           " enable syntax processing
 
 let g:GetFileIgnoreList = ['*.o', '*.pyc', '*/tmp/*', '*~', '*/.git/*', '*/.tox/*', '*/build/*', '*/.testr/*', '*#']
 set includeexpr=substitute(v:fname,'\|.*','','g')
-set foldmethod=syntax
-set mmp=5000
+set foldmethod=syntax   " folding blocks of code
+set mmp=5000            " https://github.com/vim/vim/issues/2049
+set splitbelow          " open new split panes to right and bottom (more natural)
+set splitright
 
 "vim-go visual effects
 let g:go_disable_autoinstall = 0
@@ -15,6 +17,23 @@ let g:go_highlight_structs = 1
 let g:go_highlight_operators = 1  
 let g:go_highlight_interfaces = 1
 let g:go_highlight_build_constraints = 1 
+
+"highlight cursor visual effects
+let g:brightest#enable_filetypes = {
+\ "go" : 1,
+\ "py" : 1,
+\ "pp" : 1,
+\ "yaml" : 1,
+\ "sh" : 1
+\}
+let g:brightest#highlight = {
+\   "group" : "BrightestUnderline",
+\}
+let g:brightest#highlight_in_cursorline = {
+\   "group" : "BrightestReverse",
+\}
+"let g:brightest#enable_insert_mode = 1
+"let g:brightest#enable_highlight_all_window = 1
 
 " vim w/o args: starts from MRU window to pick files
 " vim foo: starts from MRU windows to pick files by foo filter
@@ -223,6 +242,7 @@ Plug 'junegunn/fzf.vim'
 Plug 'yegappan/mru'
 Plug 'preservim/nerdtree'
 Plug 'majutsushi/tagbar'  "requries exuberant-ctags
+Plug 'osyo-manga/vim-brightest'
 call plug#end()
 
 autocmd FileType python set omnifunc=python3complete#Complete
