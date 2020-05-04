@@ -62,6 +62,36 @@ nmap <silent> <unique> a<F1> :GoReferrers <CR>
 nmap <silent> <unique> <F8> :GoDoc <CR>
 imap <silent> <unique> <F8> <Esc>:GoDoc <CR>
 
+" <F6> toggle tagbar (requries exuberant-ctags)
+let g:tagbar_type_go = {  
+    \ 'ctagstype' : 'go',
+    \ 'kinds'     : [
+        \ 'p:package',
+        \ 'i:imports:1',
+        \ 'c:constants',
+        \ 'v:variables',
+        \ 't:types',
+        \ 'n:interfaces',
+        \ 'w:fields',
+        \ 'e:embedded',
+        \ 'm:methods',
+        \ 'r:constructor',
+        \ 'f:functions'
+    \ ],
+    \ 'sro' : '.',
+    \ 'kind2scope' : {
+        \ 't' : 'ctype',
+        \ 'n' : 'ntype'
+    \ },
+    \ 'scope2kind' : {
+        \ 'ctype' : 't',
+        \ 'ntype' : 'n'
+    \ },
+    \ 'ctagsbin'  : 'gotags',
+    \ 'ctagsargs' : '-sort -silent'
+    \ }
+nmap <silent> <unique> <F6> :TagbarToggle<CR>
+
 " <F2> save, save & exit (and run goimports) on double press
 imap <silent> <F2> <Esc>:w<CR>
 nmap <silent> <F2> :w<CR>
@@ -167,6 +197,7 @@ Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'yegappan/mru'
 Plug 'preservim/nerdtree'
+Plug 'majutsushi/tagbar'
 call plug#end()
 
 autocmd FileType python set omnifunc=python3complete#Complete
