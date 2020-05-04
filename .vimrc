@@ -15,12 +15,12 @@ nmap <silent> <unique> qq <C-w>o
 " <Backspace> go back to previous file (swaps two files in a loop)
 nmap <silent> <unique> <BS> :e#<CR>
 
-" <F3> x1/x2/x3 browse a file in ./git/history (single/double/tripple press)
+" <F3> x1/x2/x3 browse a file in ./tree/history (single/double/tripple press)
 " <C-t> / <C-x> / <C-v> open a picked file in a tab/split/vsplit viewport
 nmap <silent> <unique> <F3> :Files! <CR>
 imap <silent> <unique> <F3> <Esc>:Files! <CR>
-nmap <silent> <unique> <F3><F3> :GFiles! <CR>
-imap <silent> <unique> <F3><F3> <Esc>:GFiles! <CR>
+nmap <silent> <unique> <F3><F3> :NERDTreeToggle <CR>
+imap <silent> <unique> <F3><F3> <Esc>:NERDTreeToggle <CR>
 nmap <silent> <unique> <F3><F3><F3> :History <CR>
 imap <silent> <unique> <F3><F3><F3> <Esc>:History <CR>
 " <a,F3> open alternative view for history ( <o> to open file in a viewport)
@@ -166,6 +166,7 @@ Plug 'pythoncomplete'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'yegappan/mru'
+Plug 'preservim/nerdtree'
 call plug#end()
 
 autocmd FileType python set omnifunc=python3complete#Complete
