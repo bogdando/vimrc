@@ -71,6 +71,8 @@ set splitbelow          " open new split panes to right and bottom (more natural
 set splitright
 
 "vim-go visual effects
+let g:go_mod_fmt_autosave = 1
+let g:go_fmt_autosave = 1
 let g:go_disable_autoinstall = 0
 let g:go_highlight_functions = 1
 let g:go_highlight_methods = 1
@@ -164,6 +166,7 @@ autocmd FileType go nmap <silent> <F8> :GoDoc <CR>
 autocmd FileType go imap <silent> <F8> <Esc>:GoDoc <CR>
 
 " <F6> toggle tags bar view
+" a<F6> toggle alt bar to show only declarations
 "for python install ftplugin/python.vim manually
 autocmd FileType go let g:tagbar_type_go = {
     \ 'ctagstype' : 'go',
@@ -194,6 +197,8 @@ autocmd FileType go let g:tagbar_type_go = {
     \ }
 nmap <silent> <F6> :TagbarToggle<CR>
 imap <silent> <F6> <Esc>:TagbarToggle<CR>
+nmap <silent> a<F6> :GoDecls<CR>
+imap <silent> a<F6> <Esc>:GoDecls<CR>
 
 " <F2> save, save & exit (and run goimports) on double press
 imap <silent> <F2> <Esc>:w<CR>
