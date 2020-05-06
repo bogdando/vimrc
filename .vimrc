@@ -105,8 +105,10 @@ let g:brightest#highlight_in_cursorline = {
 "let g:brightest#enable_highlight_all_window = 1
 
 "NOTE: describes mappings from ~/.vim/after/plugin/remap.vim
+" vim <some_file>: starts as usual
 " vim w/o args: starts from MRU window to pick files
-" vim foo: starts from MRU windows to pick files by foo filter
+" vim s foo: starts from MRU windows to pick files by foo filter
+"  --- hotkey bindings ---
 " <TAB> move across viewports (<C-PgUp/PgDn> for tabs)
 " (N)<SPACE> toggle folding levels to min/max or a custom N
 "   F.e: 3<SPACE> - sets folding level to 3
@@ -242,7 +244,12 @@ function MRUIfEmpty()
         :MRU
     elseif filereadable(@%) == 0
         " File doesn't exist yet
-        execute ":MRU " . argv(0)
+        let substr = matchstr(argv(0), "^s$")
+        if (strlen(substr)!=0)
+            execute ":MRU " . argv(1)
+        else
+            :MRU
+        endif
     elseif line('$') == 1 && col('$') == 1
         " File is empty
         :MRU
