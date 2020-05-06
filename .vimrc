@@ -1,6 +1,67 @@
-filetype plugin on
-filetype indent on      " load filetype-specific indent files
-syntax enable           " enable syntax processing
+"vim plug
+call plug#begin('~/.vim/plugged')
+Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' } "requires at least Vim 8.0.1453
+Plug 'godlygeek/tabular'
+Plug 'rodjek/vim-puppet'
+Plug 'tpope/vim-unimpaired'
+Plug 'touv/vim-arrow'
+Plug 'Vimjas/vim-python-pep8-indent'
+Plug 'vim-scripts/pythoncomplete'
+Plug 'junegunn/fzf'
+Plug 'junegunn/fzf.vim'
+Plug 'yegappan/mru'
+Plug 'preservim/nerdtree'
+Plug 'majutsushi/tagbar'  "requries exuberant-ctags
+Plug 'osyo-manga/vim-brightest'
+call plug#end()
+
+filetype plugin indent on " load filetype-specific indent files
+filetype on
+syntax enable             " enable syntax processing
+syntax on
+
+autocmd FileType python set omnifunc=python3complete#Complete
+autocmd FileType go set omnifunc=go#complete#Complete
+autocmd FileType go set foldlevel=1  " vim-go resets all folds on save...
+autocmd BufRead,BufNewFile *.md setlocal textwidth=80
+autocmd BufRead,BufNewFile *.rst setlocal textwidth=80
+autocmd BufRead,BufNewFile COMMIT_EDITMSG setlocal textwidth=71
+
+augroup at_end_of_vim_setup
+    let &winheight = &lines * 5 / 10 + 1
+    let &winminheight = 5
+    vert resize | resize
+augroup END
+
+augroup restorezoom
+    autocmd WinEnter * silent! :call ToggleZoom(v:false)
+augroup END
+
+augroup at_enter
+    autocmd VimEnter * call MRUIfEmpty()
+augroup END
+
+set expandtab           " tabs are spaces
+set shiftwidth=2
+set tabstop=2           " number of visual spaces per TAB
+set softtabstop=2       " number of spaces in tab when editing
+set autoindent
+set cindent
+"set smarttab
+
+set cursorline          " highlight current line
+set wildmenu            " visual autocomplete for command menu
+set lazyredraw          " redraw only when we need to.
+set showmatch           " highlight matching [{()}]
+set incsearch           " search as characters are entered
+set hlsearch            " highlight matches
+set textwidth=79
+
+set backup
+set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
+set backupskip=/tmp/*,/private/tmp/*
+set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
+set writebackup
 
 let g:GetFileIgnoreList = ['*.o', '*.pyc', '*/tmp/*', '*~', '*/.git/*', '*/.tox/*', '*/build/*', '*/.testr/*', '*#']
 set includeexpr=substitute(v:fname,'\|.*','','g')
@@ -11,12 +72,12 @@ set splitright
 
 "vim-go visual effects
 let g:go_disable_autoinstall = 0
-let g:go_highlight_functions = 1  
-let g:go_highlight_methods = 1  
-let g:go_highlight_structs = 1  
-let g:go_highlight_operators = 1  
+let g:go_highlight_functions = 1
+let g:go_highlight_methods = 1
+let g:go_highlight_structs = 1
+let g:go_highlight_operators = 1
 let g:go_highlight_interfaces = 1
-let g:go_highlight_build_constraints = 1 
+let g:go_highlight_build_constraints = 1
 
 "highlight cursor visual effects
 let g:brightest#enable_filetypes = {
@@ -39,7 +100,7 @@ let g:brightest#highlight_in_cursorline = {
 " vim foo: starts from MRU windows to pick files by foo filter
 " <TAB> move across viewports (<C-PgUp/PgDn> for tabs)
 nnoremap <silent> <Tab> <C-w><C-w>
-" (N)<SPACE> toggle folding levels between 0/N (defaults 0/1)
+" (N)<SPACE> toggle folding levels to min/max or a custom N
 "   F.e: 3<SPACE> - sets folding level to 3
 nnoremap <silent> <space> :<C-U>call ToggleFoldLevels(v:count)<CR>
 " <o> fold/unfold toggle
@@ -66,7 +127,7 @@ imap <silent> <unique> <F3><F3><F3> <Esc>:History <CR>
 " <a,F3> open alternative view for history ( <o> to open file in a viewport)
 nmap <silent> <unique> a<F3> :MRU <CR>
 
-" <ww> / <w> swap words forward/back 
+" <ww> / <w> swap words forward/back
 nmap <silent> ww "_yiw:s/\(\%#\w\+\)\(\W\+\)\(\w\+\)/\3\2\1/<CR><c-o><c-l>:nohlsearch<CR>
 nmap <silent> w "_yiw?\w\+\_W\+\%#<CR>:s/\(\%#\w\+\)\(\_W\+\)\(\w\+\)/\3\2\1/<CR><c-o><c-l>:nohlsearch<CR>
 
@@ -104,7 +165,7 @@ autocmd FileType go imap <silent> <F8> <Esc>:GoDoc <CR>
 
 " <F6> toggle tags bar view
 "for python install ftplugin/python.vim manually
-autocmd FileType go let g:tagbar_type_go = {  
+autocmd FileType go let g:tagbar_type_go = {
     \ 'ctagstype' : 'go',
     \ 'kinds'     : [
         \ 'p:package',
@@ -139,10 +200,8 @@ imap <silent> <F2> <Esc>:w<CR>
 nmap <silent> <F2> :w<CR>
 imap <silent> <F2><F2> <Esc>:wq<CR>
 nmap <silent> <F2><F2> :wq<CR>
-autocmd FileType go imap <buffer> <silent> <F2><F2> <Esc>:GoImports <CR> <bar> :execute ":!goimports -w -v " . bufname('%')<CR> <bar> :wq<CR>
-autocmd FileType go nmap <buffer> <silent> <F2><F2> :GoImports <CR> <bar> :execute ":!goimports -w -v " . bufname('%')<CR> <bar> :wq<CR>
-autocmd FileType go imap <buffer> <silent> <F2> <Esc>:GoImports <CR> <bar> :execute ":!goimports -w -v " . bufname('%')<CR> <bar>  :w<CR>
-autocmd FileType go nmap <buffer> <silent> <F2> :GoImports <CR> <bar> :execute ":!goimports -w -v " . bufname('%')<CR> <bar> :w<CR>
+autocmd FileType go imap <buffer> <silent> <F2><F2> :execute ":!goimports -w -v " . bufname('%')<CR> <bar> :wq<CR>
+autocmd FileType go nmap <buffer> <silent> <F2><F2> :execute ":!goimports -w -v " . bufname('%')<CR> <bar> :wq<CR>
 
 " <F7> run tox PEP8/Go-lint
 nmap <silent> <F7> :!tox -epep8 <CR>
@@ -167,10 +226,10 @@ autocmd FileType tex nmap <buffer> <silent> <F9> :!docker run --rm -it -v $(pwd)
 nmap <Esc><Esc> :q<CR>
 nmap <Esc><Esc><Esc> :q!<CR>
 
-" <h> / <h,h> show git diff for open file to HEAD / HEAD~ 
+" <h> / <h,h> show git diff for open file to HEAD / HEAD~
 nmap <silent> <unique> h :!git difftool @ %<CR>
 nmap <silent> <unique> hh :!git difftool @~ %<CR>
-" <h,g> / <h,h,g> show full git diff to HEAD/HEAD~ 
+" <h,g> / <h,h,g> show full git diff to HEAD/HEAD~
 nmap <silent> <unique> hg :!git difftool @<CR>
 nmap <silent> <unique> hhg :!git difftool @~<CR>
 " <F4> show git info for the commit that introduced selected line
@@ -184,22 +243,6 @@ imap <silent> <F4><F4> <Esc>:execute ":!c=$(git blame " . bufname('%') " -L " . 
 " <TAB>(edit mode) use smart autocomplete
 inoremap <silent> <Tab> <c-r>=Smart_TabComplete()<CR>
 
-set expandtab           " tabs are spaces
-set shiftwidth=2
-set tabstop=2           " number of visual spaces per TAB
-set softtabstop=2       " number of spaces in tab when editing
-set autoindent
-set cindent
-"set smarttab
-
-set cursorline          " highlight current line
-set wildmenu            " visual autocomplete for command menu
-set lazyredraw          " redraw only when we need to.
-set showmatch           " highlight matching [{()}]
-set incsearch           " search as characters are entered
-set hlsearch            " highlight matches
-set textwidth=79
-
 "allows cursor change in tmux mode
 if exists('$TMUX')
     let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
@@ -208,48 +251,6 @@ else
     let &t_SI = "\<Esc>]50;CursorShape=1\x7"
     let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 endif
-
-set backup
-set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
-set backupskip=/tmp/*,/private/tmp/*
-set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
-set writebackup
-
-au BufRead,BufNewFile *.md setlocal textwidth=80
-au BufRead,BufNewFile *.rst setlocal textwidth=80
-au BufRead,BufNewFile COMMIT_EDITMSG setlocal textwidth=71
-
-augroup at_end_of_vim_setup
-    let &winheight = &lines * 5 / 10 + 1
-    let &winminheight = 5
-    vert resize | resize
-augroup END
-
-augroup restorezoom
-    au WinEnter * silent! :call ToggleZoom(v:false)
-augroup END
-
-au VimEnter * call MRUIfEmpty()
-
-"vim plug
-call plug#begin('~/.vim/plugged')
-Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' } "requires at least Vim 8.0.1453
-Plug 'godlygeek/tabular'
-Plug 'rodjek/vim-puppet'
-Plug 'tpope/vim-unimpaired'
-Plug 'touv/vim-arrow'
-Plug 'Vimjas/vim-python-pep8-indent'
-Plug 'pythoncomplete'
-Plug 'junegunn/fzf'
-Plug 'junegunn/fzf.vim'
-Plug 'yegappan/mru'
-Plug 'preservim/nerdtree'
-Plug 'majutsushi/tagbar'  "requries exuberant-ctags
-Plug 'osyo-manga/vim-brightest'
-call plug#end()
-
-autocmd FileType python set omnifunc=python3complete#Complete
-autocmd FileType go set omnifunc=go#complete#Complete
 
 function! Smart_TabComplete()
   let line = getline('.')                         " current line
@@ -287,7 +288,7 @@ function! ToggleFoldLevels(level)
         let cmd = 'setlocal foldlevel=' . a:level
         exe cmd
     else
-        setlocal foldlevel=1
+        setlocal foldlevel=2
     endif
 endfunction
 
