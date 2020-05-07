@@ -39,8 +39,8 @@ autocmd FileType go nmap <silent> <F8> :GoDoc <CR>
 autocmd FileType go imap <silent> <F8> <Esc>:GoDoc <CR>
 nmap <silent> <F6> :TagbarToggle<CR>
 imap <silent> <F6> <Esc>:TagbarToggle<CR>
-nmap <silent> a<F6> :GoDecls<CR>
-imap <silent> a<F6> <Esc>:GoDecls<CR>
+nmap <silent> <S-F6> :GoDecls<CR>
+imap <silent> <S-F6> <Esc>:GoDecls<CR>
 imap <silent> <F2> <Esc>:w<CR>
 nmap <silent> <F2> :w<CR>
 imap <silent> <F2><F2> <Esc>:wq<CR>
@@ -51,8 +51,8 @@ nmap <silent> <F7> :!tox -epep8 <CR>
 imap <silent> <F7> <Esc>:!tox -epep8 <CR>
 autocmd FileType go nmap <buffer> <silent> <F7> :GoMetaLinter <CR>
 autocmd FileType go imap <buffer> <silent> <F7> <Esc>:GoMetaLinter <CR>
-autocmd FileType go nmap <buffer> <silent> a<F7> :execute ":!go vet " . bufname('%')<CR>
-autocmd FileType go imap <buffer> <silent> a<F7> <Esc>:execute ":!go vet " . bufname('%')<CR>
+autocmd FileType go nmap <buffer> <silent> <S-F7> :execute ":!go vet " . bufname('%')<CR>
+autocmd FileType go imap <buffer> <silent> <S-F7> <Esc>:execute ":!go vet " . bufname('%')<CR>
 nmap <silent> <F7><F7> :!rm -r .testrepository; tox -epy36<CR>
 imap <silent> <F7><F7> <Esc>:!rm -r .testrepository; tox -epy36<CR>
 autocmd FileType go nmap <buffer> <silent> <F7><F7> :GoTestFunc <CR>

@@ -130,11 +130,11 @@ let g:brightest#highlight_in_cursorline = {
 " <a,F1> show goguru global referers for an entity
 " <F8> show go doc
 " <F6> toggle tags bar view
-" a<F6> toggle alt bar to show only declarations
+" <Shift-F6> toggle alt bar to show only declarations
 "for python install ftplugin/python.vim manually
 " <F2> save, save & exit (and run goimports) on double press
 " <F7> run tox PEP8/Go-lint
-" a<F7> run Go-vet
+" <Shift-F7> run Go-vet
 " <F7> x2 run tox -epy36 / go test
 " <g,t> run go test single func
 " <F9> compile LaTeX
