@@ -33,6 +33,9 @@ autocmd BufRead,BufNewFile *.md setlocal textwidth=80
 autocmd BufRead,BufNewFile *.rst setlocal textwidth=80
 autocmd BufRead,BufNewFile COMMIT_EDITMSG setlocal textwidth=71
 
+let &t_TI = ""
+let &t_TE = ""
+
 augroup at_end_of_vim_setup
     let &winheight = &lines * 5 / 10 + 1
     let &winminheight = 5
