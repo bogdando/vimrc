@@ -19,6 +19,7 @@ Plug 'honza/vim-snippets'
 Plug 'MarcWeber/vim-addon-mw-utils'
 Plug 'tomtom/tlib_vim'
 Plug 'garbas/vim-snipmate'
+Plug 'airblade/vim-gitgutter'
 call plug#end()
 
 filetype plugin indent on " load filetype-specific indent files
@@ -117,6 +118,7 @@ let g:brightest#highlight_in_cursorline = {
 "   F.e: 3<SPACE> - sets folding level to 3
 " <o> fold/unfold toggle
 " <f> / <a,f> move to the next/prev closed fold block
+" <]c> / <[c> move to the next/prev diff chunk block
 " <x> toggle zoom of a viewport in/out
 " <qq> close non active (all but this one) viewports
 " <Backspace> go back to previous file (swaps two files in a loop)
