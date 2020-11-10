@@ -151,6 +151,7 @@ let g:brightest#highlight_in_cursorline = {
 " <TAB>(edit mode) use smart autocomplete
 imap <silent> <Tab> <c-r>=Smart_TabComplete()<CR>
 " <Shift-TAB>(edit mode) autocomplete from available snippets only
+" <a,F5> tell gogetguru to fix things after failed F5
 
 autocmd FileType go let g:tagbar_type_go = {
     \ 'ctagstype' : 'go',
@@ -259,4 +260,11 @@ function MRUIfEmpty()
         " File is empty
         :MRU
     endif
+endfunction
+
+function ParseMessages()
+    redir! >/tmp/vim_messages
+    exec "filter 'could not import' messages"
+    redir END
+    exec ":!cat /tmp/vim_messages \| sort -u \| grep -oE \"could not import \\S+\" \| awk '{printf \"gogetguru: extracting \"$NF\"@master\\n\"}'\|gogetguru"
 endfunction

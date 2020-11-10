@@ -69,3 +69,4 @@ imap <silent> <F4> <Esc>:execute ":!git show $(git blame " bufname('%') " -L " l
 nmap <silent> <F4><F4> :execute ":!c=$(git blame " . bufname('%') " -L " . line('.') "\|head -1\|awk '{print $1}'); git difftool ${c}~ $c " . bufname('%')<CR>
 imap <silent> <F4><F4> <Esc>:execute ":!c=$(git blame " . bufname('%') " -L " . line('.') "\|head -1\|awk '{print $1}'); git difftool ${c}~ $c " . bufname('%')<CR>
 imap <silent> <S-Tab> <Plug>snipMateShow
+nnoremap <silent> <unique> a<F5> :call ParseMessages()<CR>
