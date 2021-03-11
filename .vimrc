@@ -25,6 +25,9 @@ Plug 'tsony-tsonev/nerdtree-git-plugin'
 "Plug 'ryanoasis/vim-devicons'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 "Plug 'kana/vim-submode'
+Plug 'elzr/vim-json'
+Plug 'pedrohdz/vim-yaml-folds'
+"Plug 'pseewald/vim-anyfold'
 call plug#end()
 
 filetype plugin indent on " load filetype-specific indent files
@@ -35,6 +38,8 @@ syntax on
 autocmd FileType python set omnifunc=python3complete#Complete
 autocmd FileType go set omnifunc=go#complete#Complete
 autocmd FileType go set foldlevel=1  " vim-go resets all folds on save...
+autocmd FileType json set foldlevel=2
+autocmd FileType yaml set foldlevel=3 " fits the best ansible playbooks
 autocmd BufRead,BufNewFile *.md setlocal textwidth=80
 autocmd BufRead,BufNewFile *.rst setlocal textwidth=80
 autocmd BufRead,BufNewFile COMMIT_EDITMSG setlocal textwidth=71
@@ -104,6 +109,8 @@ let g:brightest#enable_filetypes = {
 \ "py" : 1,
 \ "pp" : 1,
 \ "yaml" : 1,
+\ "yml" : 1,
+\ "json" : 1,
 \ "sh" : 1
 \}
 let g:brightest#highlight = {
@@ -133,6 +140,11 @@ let g:NERDTreeMinimalUI = 1
 let g:NERDTreeDirArrows = 1
 let g:NERDTreeMapNextHunk = "]]"
 let g:NERDTreeMapPrevHunk = "[["
+let g:NERDTreeMapOpenVSplit = '<C-v>'
+let g:NERDTreeMapOpenSplit='<C-x>'
+let g:NERDTreeChDirMode=2
+let g:NERDTreeMapPreview='p'
+let g:NERDTreeMapOpenInTab = '<C-t>'
 
 let g:NERDTreeIndicatorMapCustom = {
     \ "Modified"  : "✹",
@@ -156,14 +168,15 @@ let g:NERDTreeIndicatorMapCustom = {
 " <TAB> move across viewports (<C-PgUp/PgDn> for tabs)
 " (N)<SPACE> toggle folding levels to min/max or a custom N
 "   F.e: 3<SPACE> - sets folding level to 3
-" <o> fold/unfold toggle
-" <f> / <a,f> move to the next/prev closed fold block
+" <o> or <kp*> fold/unfold toggle
+" <kp+> / <kp-> move to the next/prev closed fold block
 " <]]> / <[[> move to the next/prev diff chunk block
 " <x> toggle zoom of a viewport in/out
 " <qq> close non active (all but this one) viewports
 " <Backspace> go back to previous file (swaps two files in a loop)
-" <F3> x1/x2/x3 browse a file in ./tree/history (single/double/tripple press)
-" <C-t> / <C-x> / <C-v> open a picked file in a tab/split/vsplit viewport
+" <F3> x1/x2/x3 browse a file in ./NERDtree/history (single/double/tripple press)
+" <p> / <C-t> / <C-x> / <C-v> preview/open a picked file in a tab/split/vsplit viewport
+" <gm/n/s> search next modified/new/staged file in git repo (in NERDtree)
 " <a,F3> open alternative view for history ( <o> to open file in a viewport)
 " <ww> / <w> swap words forward/back
 " <C-a(,a)> toggle ON/OFF paste mode
@@ -183,7 +196,7 @@ let g:NERDTreeIndicatorMapCustom = {
 " <F7> x2 run tox -epy36 / go test
 " <g,t> run go test single func
 " <F9> compile LaTeX
-" <ESC> x2/x3 exit or force exit discarding changes
+" <ESC> x2 exit window
 " <h> / <h,h> show git diff for open file to HEAD / HEAD~
 " <h,g> / <h,h,g> show full git diff to HEAD/HEAD~
 " <F4> show git info for the commit that introduced selected line
@@ -192,10 +205,14 @@ let g:NERDTreeIndicatorMapCustom = {
 imap <silent> <Tab> <c-r>=Smart_TabComplete()<CR>
 " <Shift-TAB>(edit mode) autocomplete from available snippets only
 " <a,F5> tell gogetguru to fix things after failed F5
+" <a, o> hide all {.*} blocks (undo with u)
 
 "Start NERDTree when Vim is started without file arguments.
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists('s:std_in') | NERDTree | endif
+
+"Open the existing NERDTree on each new tab.
+autocmd BufWinEnter * silent NERDTreeMirror
 
 autocmd FileType go let g:tagbar_type_go = {
     \ 'ctagstype' : 'go',

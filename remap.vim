@@ -2,9 +2,10 @@
 " that ensures in remaps any mappings in plugins
 nnoremap <silent> <Tab> <C-w><C-w>
 nnoremap <silent> <space> :<C-U>call ToggleFoldLevels(v:count)<CR>
-nmap <silent> <unique> o za<CR>
-nnoremap <silent> <unique> f :call NextClosedFold('j')<CR>
-nnoremap <silent> <unique> af :call NextClosedFold('k')<CR>
+nmap <silent> <unique> o za
+nmap <silent> <unique> * za
+nnoremap <silent> <unique> + :call NextClosedFold('j')<CR>
+nnoremap <silent> <unique> - :call NextClosedFold('k')<CR>
 nnoremap <silent> <unique> x :call ToggleZoom(v:true)<CR>
 nmap <silent> <unique> qq <C-w>o
 nmap <silent> <unique> <BS> :e#<CR>
@@ -59,7 +60,6 @@ autocmd FileType go nmap <buffer> <silent> <F7><F7> :GoTestFunc <CR>
 autocmd FileType go imap <buffer> <silent> <F7><F7> <Esc>:GoTestFunc <CR>
 autocmd FileType tex nmap <buffer> <silent> <F9> :!docker run --rm -it -v $(pwd):/home danteev/texlive texliveonfly -c latexmk -a "-pdf -f -synctex=0" %<CR>
 nmap <Esc><Esc> :q<CR>
-nmap <Esc><Esc><Esc> :q!<CR>
 nmap <silent> <unique> h :!git difftool @ %<CR>
 nmap <silent> <unique> hh :!git difftool @~ %<CR>
 nmap <silent> <unique> hg :!git difftool @<CR>
@@ -72,3 +72,7 @@ imap <silent> <S-Tab> <Plug>snipMateShow
 nnoremap <silent> <unique> a<F5> :call ParseMessages()<CR>
 nmap <silent> ]] :GitGutterNextHunk<CR>
 nmap <silent> [[ :GitGutterPrevHunk<CR>
+nmap <silent> gn /✭<CR>
+nmap <silent> gm /✹<CR>
+nmap <silent> gs /✚<CR>
+nmap <silent> ao :%s/{.*}/{...}/g<CR>
