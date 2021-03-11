@@ -20,6 +20,11 @@ Plug 'MarcWeber/vim-addon-mw-utils'
 Plug 'tomtom/tlib_vim'
 Plug 'garbas/vim-snipmate'
 Plug 'airblade/vim-gitgutter'
+Plug 'rdolgushin/groovy.vim'
+Plug 'tsony-tsonev/nerdtree-git-plugin'
+"Plug 'ryanoasis/vim-devicons'
+Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+"Plug 'kana/vim-submode'
 call plug#end()
 
 filetype plugin indent on " load filetype-specific indent files
@@ -47,10 +52,12 @@ augroup restorezoom
     autocmd WinEnter * silent! :call ToggleZoom(v:false)
 augroup END
 
-augroup at_enter
-    autocmd VimEnter * call MRUIfEmpty()
-augroup END
+""augroup at_enter
+""    autocmd VimEnter * call MRUIfEmpty()
+""augroup END
 
+set updatetime=100      " faster work of git plugin
+set encoding=UTF-8
 set expandtab           " tabs are spaces
 set shiftwidth=2
 set tabstop=2           " number of visual spaces per TAB
@@ -107,6 +114,39 @@ let g:brightest#highlight_in_cursorline = {
 \}
 "let g:brightest#enable_insert_mode = 1
 "let g:brightest#enable_highlight_all_window = 1
+let g:go_debug_windows = {
+      \ 'vars':       'rightbelow 60vnew',
+      \ 'stack':      'rightbelow 10new',
+\ }
+
+"let g:WebDevIconsUnicodeDecorateFolderNodes = 1
+"let g:WebDevIconsNerdTreeAfterGlyphPadding = ''
+"let g:WebDevIconsNerdTreeBeforeGlyphPadding = ''
+let g:NERDTreeGitStatusNodeColorization = 1
+let g:NERDTreeGitStatusWithFlags = 1
+let g:NERDTreeShowIgnoredStatus = 0
+let g:DevIconsEnableFoldersOpenClose = 0
+let g:NERDTreeSyntaxEnabledExtensions = ['*']
+let g:NERDTreeDirArrowExpandable = '▸'
+let g:NERDTreeDirArrowCollapsible = '▾'
+let g:NERDTreeMinimalUI = 1
+let g:NERDTreeDirArrows = 1
+let g:NERDTreeMapNextHunk = "]]"
+let g:NERDTreeMapPrevHunk = "[["
+
+let g:NERDTreeIndicatorMapCustom = {
+    \ "Modified"  : "✹",
+    \ "Staged"    : "✚",
+    \ "Untracked" : "✭",
+    \ "Renamed"   : "➜",
+    \ "Unmerged"  : "═",
+    \ "Deleted"   : "✖",
+    \ "Dirty"     : "✗",
+    \ "Clean"     : "✔︎",
+    \ 'Ignored'   : '☒',
+    \ "Unknown"   : "?",
+    \ }
+
 
 "NOTE: describes mappings from ~/.vim/after/plugin/remap.vim
 " vim <some_file>: starts as usual
@@ -118,7 +158,7 @@ let g:brightest#highlight_in_cursorline = {
 "   F.e: 3<SPACE> - sets folding level to 3
 " <o> fold/unfold toggle
 " <f> / <a,f> move to the next/prev closed fold block
-" <]c> / <[c> move to the next/prev diff chunk block
+" <]]> / <[[> move to the next/prev diff chunk block
 " <x> toggle zoom of a viewport in/out
 " <qq> close non active (all but this one) viewports
 " <Backspace> go back to previous file (swaps two files in a loop)
@@ -152,6 +192,10 @@ let g:brightest#highlight_in_cursorline = {
 imap <silent> <Tab> <c-r>=Smart_TabComplete()<CR>
 " <Shift-TAB>(edit mode) autocomplete from available snippets only
 " <a,F5> tell gogetguru to fix things after failed F5
+
+"Start NERDTree when Vim is started without file arguments.
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists('s:std_in') | NERDTree | endif
 
 autocmd FileType go let g:tagbar_type_go = {
     \ 'ctagstype' : 'go',
