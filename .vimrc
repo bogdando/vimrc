@@ -159,6 +159,7 @@ let g:NERDTreeIndicatorMapCustom = {
     \ "Unknown"   : "?",
     \ }
 
+let g:snipMate = { 'snippet_version' : 1 }
 
 "NOTE: describes mappings from ~/.vim/after/plugin/remap.vim
 " vim <some_file>: starts as usual
