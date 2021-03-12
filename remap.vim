@@ -76,3 +76,4 @@ nmap <silent> gn /✭<CR>
 nmap <silent> gm /✹<CR>
 nmap <silent> gs /✚<CR>
 nmap <silent> ao :%s/{.*}/{...}/g<CR>
+nmap <silent> co :%s/^#\S.*/#.../g<CR>

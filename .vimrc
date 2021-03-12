@@ -26,8 +26,6 @@ Plug 'tsony-tsonev/nerdtree-git-plugin'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 "Plug 'kana/vim-submode'
 Plug 'elzr/vim-json'
-Plug 'pedrohdz/vim-yaml-folds'
-"Plug 'pseewald/vim-anyfold'
 call plug#end()
 
 filetype plugin indent on " load filetype-specific indent files
@@ -38,6 +36,7 @@ syntax on
 autocmd FileType python set omnifunc=python3complete#Complete
 autocmd FileType go set omnifunc=go#complete#Complete
 autocmd FileType go set foldlevel=1  " vim-go resets all folds on save...
+autocmd FileType sh set foldmethod=indent  " vim-go resets all folds on save...
 autocmd FileType json set foldlevel=2
 autocmd FileType yaml set foldlevel=3 " fits the best ansible playbooks
 autocmd BufRead,BufNewFile *.md setlocal textwidth=80
@@ -163,7 +162,7 @@ let g:snipMate = { 'snippet_version' : 1 }
 
 "NOTE: describes mappings from ~/.vim/after/plugin/remap.vim
 " vim <some_file>: starts as usual
-" vim w/o args: starts from MRU window to pick files
+" vim w/o args: starts from NERTtree window to pick files
 " vim s foo: starts from MRU windows to pick files by foo filter
 "  --- hotkey bindings ---
 " <TAB> move across viewports (<C-PgUp/PgDn> for tabs)
@@ -207,6 +206,7 @@ imap <silent> <Tab> <c-r>=Smart_TabComplete()<CR>
 " <Shift-TAB>(edit mode) autocomplete from available snippets only
 " <a,F5> tell gogetguru to fix things after failed F5
 " <a, o> hide all {.*} blocks (undo with u)
+" <c, o> hide all ^#<code> blocks (undo with u)
 
 "Start NERDTree when Vim is started without file arguments.
 autocmd StdinReadPre * let s:std_in=1
