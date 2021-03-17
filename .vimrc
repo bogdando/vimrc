@@ -166,6 +166,7 @@ let g:snipMate = { 'snippet_version' : 1 }
 " vim s foo: starts from MRU windows to pick files by foo filter
 "  --- hotkey bindings ---
 " <TAB> move across viewports (<C-PgUp/PgDn> for tabs)
+" <a, TAN> pick a viewport to switch into from a list
 " (N)<SPACE> toggle folding levels to min/max or a custom N
 "   F.e: 3<SPACE> - sets folding level to 3
 " <o> or <kp*> fold/unfold toggle

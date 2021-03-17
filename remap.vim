@@ -1,6 +1,7 @@
 " put it into ~/.vim/after/plugin/remap.vim
 " that ensures in remaps any mappings in plugins
 nnoremap <silent> <Tab> <C-w><C-w>
+nnoremap <silent> a<Tab> :W<CR>
 nnoremap <silent> <space> :<C-U>call ToggleFoldLevels(v:count)<CR>
 nmap <silent> <unique> o za
 nmap <silent> <unique> * za
