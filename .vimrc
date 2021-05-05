@@ -333,3 +333,11 @@ function ParseMessages()
     redir END
     exec ":!cat /tmp/vim_messages \| sort -u \| grep -oE \"could not import \\S+\" \| awk '{printf \"gogetguru: extracting \"$NF\"@master\\n\"}'\|gogetguru"
 endfunction
+
+function NERDTreeToggleSmart()
+    if exists("g:NERDTree") && g:NERDTree.IsOpen()
+        silent NERDTreeToggle
+    else
+        silent NERDTreeFind
+    endif
+endfunction
