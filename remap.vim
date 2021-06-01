@@ -10,8 +10,8 @@ nnoremap <silent> <unique> - :call NextClosedFold('k')<CR>
 nnoremap <silent> <unique> x :call ToggleZoom(v:true)<CR>
 nmap <silent> <unique> qq <C-w>o
 nmap <silent> <unique> <BS> :e#<CR>
-nmap <silent> <unique> <F3> :Files! <CR>
-imap <silent> <unique> <F3> <Esc>:Files! <CR>
+nmap <silent> <unique> <F3> :Files <CR>
+imap <silent> <unique> <F3> <Esc>:Files <CR>
 nmap <silent> <unique> <F3><F3> :call NERDTreeToggleSmart() <CR>
 imap <silent> <unique> <F3><F3> <Esc>:call NERDTreeToggleSmart() <CR>
 nmap <silent> <unique> <F3><F3><F3> :History <CR>
